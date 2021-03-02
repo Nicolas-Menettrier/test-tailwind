@@ -3,13 +3,15 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 
+import AlbumNode from "./AlbumNode";
+
 import { useAppSelector } from "../hooks/reduxTyped";
 import useLocalStorage from "../hooks/useLocalStorage";
 
-import AlbumNode from "./AlbumNode";
+import { selectFilteredList } from "../stateManager/slices/iTunesAlbum.reducer";
 
 const AlbumsList: React.FC = () => {
-  const albumList = useAppSelector((state) => state.iTunes.filteredArray);
+  const albumList = useAppSelector(selectFilteredList);
   const [favorites, setFavorites] = useLocalStorage<Array<string>>("favorites");
 
   return (

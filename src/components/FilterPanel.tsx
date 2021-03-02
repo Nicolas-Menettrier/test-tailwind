@@ -3,8 +3,8 @@ import React from "react";
 import { useAppDispatch } from "../hooks/reduxTyped";
 
 import {
-  filterByArtistAndAlbum,
-  filterByCategory,
+  setCategory,
+  setFilterSearch,
 } from "../stateManager/slices/iTunesAlbum.reducer";
 
 interface IFilterPanelProps {
@@ -24,7 +24,7 @@ const FilterPanel: React.FC<IFilterPanelProps> = ({
           className="block shadow-md h-9 rounded-md bg-white border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
           name="category"
           id="category-select"
-          onChange={(e) => dispatch(filterByCategory(e.target.value))}
+          onChange={(e) => dispatch(setCategory(e.target.value))}
         >
           <option value="">Tout</option>
           {listGenre.map((el, index) => (
@@ -44,7 +44,7 @@ const FilterPanel: React.FC<IFilterPanelProps> = ({
           className="block w-full  px-4 h-9 rounded-md text-black bg-white shadow-md border-0 text-sm focus:ring-gray-500"
           placeholder="Recherche ..."
           onChange={(e) => {
-            dispatch(filterByArtistAndAlbum(e.currentTarget.value));
+            dispatch(setFilterSearch(e.currentTarget.value));
           }}
         />
       </label>

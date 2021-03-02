@@ -11,7 +11,10 @@ import SideItem from "./SideItem";
 
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useAppDispatch } from "../hooks/reduxTyped";
-import { filterByPlaylist } from "../stateManager/slices/iTunesAlbum.reducer";
+import {
+  setHomePage,
+  setPlaylist,
+} from "../stateManager/slices/iTunesAlbum.reducer";
 
 import { Playlist } from "../services/itunesApi.types";
 
@@ -29,7 +32,7 @@ const DropdownPlaylist: React.FC<IDropdownPlaylistProps> = ({
   dropdownList,
 }: IDropdownPlaylistProps) => {
   const [, setPlaylistLS] = useLocalStorage<Array<Playlist>>("playlist");
-  const [playlist, setPlaylist] = useState<Array<Playlist>>([]);
+  const [playlist, setPlaylistState] = useState<Array<Playlist>>([]);
   const [open, setOpen] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -38,7 +41,7 @@ const DropdownPlaylist: React.FC<IDropdownPlaylistProps> = ({
     const playlistString = localStorage.getItem("playlist");
 
     if (playlistString) {
-      setPlaylist(JSON.parse(playlistString));
+      setPlaylistState(JSON.parse(playlistString));
     }
   }, [open]);
 
@@ -48,7 +51,8 @@ const DropdownPlaylist: React.FC<IDropdownPlaylistProps> = ({
     const newPlaylist = playlist.filter((el) => el.title !== playlistTitle);
 
     setPlaylistLS(JSON.stringify(newPlaylist));
-    setPlaylist(newPlaylist);
+    setPlaylistState(newPlaylist);
+    dispatch(setHomePage());
     toast.success("La playlist a bien été supprimé.");
   };
 
@@ -81,7 +85,7 @@ const DropdownPlaylist: React.FC<IDropdownPlaylistProps> = ({
             playlist.map((el, index) => (
               <SideItem
                 deleteButton
-                onClick={() => dispatch(filterByPlaylist(el.title))}
+                onClick={() => dispatch(setPlaylist(el.title))}
                 onDelete={() => deletePlaylist(el.title)}
                 key={index}
                 pictureUrl={el.imageUrl}

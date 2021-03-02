@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { toast } from "react-toastify";
+
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
 
 import AlbumActionModal from "./AlbumActionModal";
@@ -32,11 +34,17 @@ const AlbumNode: React.FC<IAlbumNodeProps> = ({
       setFavorites(
         JSON.stringify([...favorites, albumInfo.id.attributes["im:id"]])
       );
+      toast.success(
+        `L'album ${albumInfo["im:name"].label} a été ajouté au favoris.`
+      );
     } else {
       setFavorites(
         JSON.stringify(
           favorites.filter((el) => el !== albumInfo.id.attributes["im:id"])
         )
+      );
+      toast.error(
+        `L'album ${albumInfo["im:name"].label} a été retiré des favoris.`
       );
     }
     dispatch(
